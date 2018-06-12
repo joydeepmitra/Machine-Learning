@@ -19,10 +19,10 @@ REQUIRED_PACKAGES = [
 ]
 
 setup(
-    name='placermodel'
+    name='placermodel',
     version='0.1',
-    author = 'Cadence'
-    author_email = 'joydeepm@cadence.com'
+    author = 'Cadence',
+    author_email = 'joydeepm@cadence.com',
     install_requires=REQUIRED_PACKAGES,
     packages=find_packages(),
     include_package_data=True,

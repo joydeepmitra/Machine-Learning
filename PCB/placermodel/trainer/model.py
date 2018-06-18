@@ -23,8 +23,8 @@ import tensorflow as tf
 tf.logging.set_verbosity(tf.logging.INFO)
 
 LIST_OF_LABELS = '5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100'.split(',')
-HEIGHT = 1024
-WIDTH = 1024
+HEIGHT = 300
+WIDTH = 300
 NUM_CHANNELS = 3
 NCLASSES = 20
 

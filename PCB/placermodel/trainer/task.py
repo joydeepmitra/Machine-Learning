@@ -114,15 +114,16 @@ def create_custom_estimator(output_dir, hparams):
 def make_experiment_fn(output_dir, hparams):
   def experiment_fn(output_dir):
     eval_freq = max(1, min(2000, hparams['train_steps']/5))
+    train_dataset=hparams['dataset_dir'] + '/train.csv'
     return tf.contrib.learn.Experiment(
       estimator=create_custom_estimator(output_dir, hparams),
       #train_input_fn=make_input_fn('gs://cloud-ml-data/img/flower_photos/train_set.csv',
       #                            hparams['train_batch_size'], hparams['augment']),
       #eval_input_fn=make_input_fn('gs://cloud-ml-data/img/flower_photos/eval_set.csv',
       #                             batch_size=None, augment=False),
-      train_input_fn=make_input_fn('./images/dataset/train.csv',
+      train_input_fn=make_input_fn(train_dataset,
                                   hparams['train_batch_size'], hparams['augment']),
-      eval_input_fn=make_input_fn('./images/dataset/eval.csv',
+      eval_input_fn=make_input_fn(train_dataset,
                                    batch_size=None, augment=False),
       train_steps=hparams['train_steps'],
       eval_steps=1, # This multiplied by 1000 should cover complete dataset
@@ -159,6 +160,11 @@ if __name__ == '__main__':
       help='GCS location to write checkpoints and export models',
       required=True
   )
+  parser.add_argument(
+      '--dataset_dir',
+      help='GCS location to read training/eval dataset',
+      required=True
+  )
   model_names = [name.replace('_model','') \
                    for name in dir(model) \
                      if name.endswith('_model')]
@@ -173,7 +179,7 @@ if __name__ == '__main__':
       default='junk'
   )
 
-  parser.add_argument('--augment', help='if specified, augment image data', dest='augment', action='store_true'); parser.set_defaults(augment=False)
+  parser.add_argument('--augment', help='if specified, augment image data', dest='augment', action='store_true');     parser.set_defaults(augment=False)
 
   # optional hyperparameters used by cnn
   parser.add_argument('--ksize1', help='kernel size of first layer for CNN', type=int, default=5)

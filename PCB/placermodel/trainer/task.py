@@ -115,6 +115,7 @@ def make_experiment_fn(output_dir, hparams):
   def experiment_fn(output_dir):
     eval_freq = max(1, min(2000, hparams['train_steps']/5))
     train_dataset=hparams['dataset_dir'] + '/train.csv'
+    eval_dataset=hparams['dataset_dir'] + '/eval.csv'
     return tf.contrib.learn.Experiment(
       estimator=create_custom_estimator(output_dir, hparams),
       #train_input_fn=make_input_fn('gs://cloud-ml-data/img/flower_photos/train_set.csv',
@@ -123,7 +124,7 @@ def make_experiment_fn(output_dir, hparams):
       #                             batch_size=None, augment=False),
       train_input_fn=make_input_fn(train_dataset,
                                   hparams['train_batch_size'], hparams['augment']),
-      eval_input_fn=make_input_fn(train_dataset,
+      eval_input_fn=make_input_fn(eval_dataset,
                                    batch_size=None, augment=False),
       train_steps=hparams['train_steps'],
       eval_steps=1, # This multiplied by 1000 should cover complete dataset

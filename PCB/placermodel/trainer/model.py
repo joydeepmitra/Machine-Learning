@@ -22,11 +22,11 @@ import tensorflow as tf
 
 tf.logging.set_verbosity(tf.logging.INFO)
 
-LIST_OF_LABELS = '5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100'.split(',')
+LIST_OF_LABELS = '1,2,3,4,5,6,7,8,9'.split(',')
 HEIGHT = 300
 WIDTH = 300
 NUM_CHANNELS = 3
-NCLASSES = 20
+NCLASSES = 9
 
 def linear_model(img, mode, hparams):
   nvalues = HEIGHT*WIDTH*NUM_CHANNELS
@@ -97,7 +97,9 @@ def read_and_preprocess(filename, augment=False):
     # decode the image file starting from the filename
     # end up with pixel values that are in the -1, 1 range
     image_contents = tf.read_file(filename)
-    image = tf.image.decode_jpeg(image_contents, channels=NUM_CHANNELS)
+    #image = tf.image.decode_jpeg(image_contents, channels=NUM_CHANNELS)
+    image = tf.image.decode_png(image_contents, channels=NUM_CHANNELS)
+
     image = tf.image.convert_image_dtype(image, dtype=tf.float32) # 0-1
     image = tf.expand_dims(image, 0) # resize_bilinear needs batches
 

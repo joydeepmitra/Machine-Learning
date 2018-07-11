@@ -1,16 +1,4 @@
-# Copyright 2017 Google Inc. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+
 
 """
 Example implementation of image model in TensorFlow 
@@ -48,7 +36,7 @@ def make_input_fn(csv_of_filenames, batch_size, augment):
     else:
        image = model.read_and_preprocess(filename)
 
-    # covert 'roses' in the csv file to '2', for example
+    # covert current PCB board in the csv file to '2', for example
     labels_table = tf.contrib.lookup.index_table_from_tensor(
       tf.constant(model.LIST_OF_LABELS))
     label_int = labels_table.lookup(label)
@@ -118,10 +106,7 @@ def make_experiment_fn(output_dir, hparams):
     eval_dataset=hparams['dataset_dir'] + '/eval.csv'
     return tf.contrib.learn.Experiment(
       estimator=create_custom_estimator(output_dir, hparams),
-      #train_input_fn=make_input_fn('gs://cloud-ml-data/img/flower_photos/train_set.csv',
-      #                            hparams['train_batch_size'], hparams['augment']),
-      #eval_input_fn=make_input_fn('gs://cloud-ml-data/img/flower_photos/eval_set.csv',
-      #                             batch_size=None, augment=False),
+      
       train_input_fn=make_input_fn(train_dataset,
                                   hparams['train_batch_size'], hparams['augment']),
       eval_input_fn=make_input_fn(eval_dataset,

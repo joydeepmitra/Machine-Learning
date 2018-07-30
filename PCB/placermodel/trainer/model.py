@@ -108,7 +108,10 @@ def read_and_preprocess(filename, augment=False):
 
 def serving_input_fn():
     # Note: only handles one image at a time ... 
-    inputs = {'imageurl': tf.placeholder(tf.string, shape=())}
+    # inputs = {'imageurl': tf.placeholder(tf.string, shape=())}
+    # Above line was causing problems fixed by JOYDEEP below
+    inputs = {'imageurl': tf.placeholder(tf.string)}
+    
     filename = tf.squeeze(inputs['imageurl']) # make it a scalar
     image = read_and_preprocess(filename)
     # make the outer dimension unknown (and not 1)
